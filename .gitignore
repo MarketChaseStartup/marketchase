@@ -1,0 +1,7 @@
+*/target/**
+*/.settings/**
+*/src/main/resources/configuration/*
+*.jar
+*.war
+*.ear
+*.class
