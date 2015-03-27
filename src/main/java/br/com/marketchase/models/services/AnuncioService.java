@@ -66,7 +66,7 @@ public class AnuncioService {
 	
 	@Transactional
 	public void desativarAutomatico(){
-		List<Anuncio> anuncios = anuncioRepository.findAtivosNaoPermanentes();
+		List<Anuncio> anuncios = anuncioRepository.findByAtivoNaoPermanentes();
 		
 		for (Anuncio anuncio : anuncios) {
 		   if((anuncio.getDataVencimento().equals(new Date())) || (anuncio.getDataVencimento().before(new Date()))){
@@ -88,7 +88,7 @@ public class AnuncioService {
 	
 	@Transactional
 	public void sativarAutomatico(){
-		List<Anuncio> anuncios = anuncioRepository.findNaoAtivosNaoPermanentes();
+		List<Anuncio> anuncios = anuncioRepository.findByNaoAtivosNaoPermanentes();
 		
 		for (Anuncio anuncio : anuncios) {
 		   if((anuncio.getDataInicio().equals(new Date())) || (anuncio.getDataInicio().before(new Date()))){

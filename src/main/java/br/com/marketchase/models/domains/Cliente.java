@@ -29,7 +29,7 @@ public class Cliente{
 	private String nome;
 
 	@OneToMany(cascade=CascadeType.ALL)
-	@JoinColumn(nullable = true)
+	@JoinColumn(nullable=true,name="idCliente")
 	private List<Contato> listaContatos;
 	
 	public long getCodigo() {

@@ -74,13 +74,6 @@ public class EnderecoService {
 		Endereco endereco = enderecoRepository.findOneByCodigo(enderecoResource
 				.getCodigo());
 		endereco = enderecoParser.paraDomain(enderecoResource, endereco);
-
-		endereco.setListaContato(new ArrayList<Contato>());
-		for (ContatoResource c : enderecoResource.getListaContatos()) {
-			Contato contato = new Contato();
-			contato = contatoParser.paraDomain(c, contato);
-			endereco.getListaContato().add(contato);
-		}
 		JsonError objeto = new JsonError();
 		objeto.setListaObjetos(new ArrayList<Object>());
 		objeto.getListaObjetos().add(endereco);

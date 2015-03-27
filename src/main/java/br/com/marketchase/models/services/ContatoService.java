@@ -41,12 +41,10 @@ public class ContatoService {
 	private ContatoParser contatoParser;
 
 	@Transactional
-	public JsonError salvar(ContatoResource contatoResource)
-			throws ContatoException {
+	public JsonError salvar(ContatoResource contatoResource) throws ContatoException {
 		Contato contato = new Contato();
 		contato = contatoParser.paraDomain(contatoResource, contato);
-		Endereco endereco = enderecoRepository.findOneByCodigo(contatoResource
-				.getEndereco().getCodigo());
+		Endereco endereco = enderecoRepository.findOneByCodigo(contatoResource.getEndereco().getCodigo());
 		endereco.setListaContato(new ArrayList<Contato>());
 		endereco.getListaContato().add(contato);
 		JsonError objeto = new JsonError();
@@ -56,10 +54,8 @@ public class ContatoService {
 	}
 
 	@Transactional
-	public JsonError editar(ContatoResource contatoResource)
-			throws ContatoException {
-		Contato contato = contatoRepository
-				.findOneByCodigo(contatoResource.getCodigo());
+	public JsonError editar(ContatoResource contatoResource) throws ContatoException {
+		Contato contato = contatoRepository.findOneByCodigo(contatoResource.getCodigo());
 		contato = contatoParser.paraDomain(contatoResource, contato);
 		JsonError objeto = new JsonError();
 		objeto.setListaObjetos(new ArrayList<Object>());
@@ -68,10 +64,8 @@ public class ContatoService {
 	}
 
 	@Transactional
-	public JsonError excluir(ContatoResource contatoResource)
-			throws ContatoException {
-		Contato contato = contatoRepository
-				.findOne(contatoResource.getCodigo());
+	public JsonError excluir(ContatoResource contatoResource) throws ContatoException {
+		Contato contato = contatoRepository.findOne(contatoResource.getCodigo());
 		contatoRepository.delete(contato);
 		JsonError objeto = new JsonError();
 		return objeto;

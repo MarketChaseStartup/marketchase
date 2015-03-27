@@ -30,9 +30,9 @@ public class ContatoController {
 		return new ResponseEntity<String> (HttpStatus.CREATED);
 	}
 	
-	@RequestMapping(value = "/{codigp}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/{codigo}", method = RequestMethod.DELETE)
 	public ResponseEntity<String> excluir(@RequestBody ContatoResource contatoResource){
-		contatoService.editar(contatoResource);
+		contatoService.excluir(contatoResource);
 		return new ResponseEntity<String> (HttpStatus.CREATED);
 	}
 	

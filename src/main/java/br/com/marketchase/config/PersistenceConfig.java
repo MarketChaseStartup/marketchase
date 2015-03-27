@@ -34,7 +34,7 @@ public class PersistenceConfig {
 	private static String PROPERTY_NAME_HIBERNATE_FORMAT_SQL = "hibernate.format_sql";
 	private static String PROPERTY_NAME_HIBERNATE_NAMING_STRATEGY = "hibernate.ejb.naming_strategy";
 	private static String PROPERTY_NAME_HIBERNATE_SHOW_SQL = "hibernate.show_sql";
-	private static String PROPERTY_NAME_ENTITYMANAGER_PACKAGES_TO_SCAN = "br.fatea.simplebank.model.domains";
+	private static String PROPERTY_NAME_ENTITYMANAGER_PACKAGES_TO_SCAN = "br.com.marketchase.models.domains";
 	private static String PROPERTY_NAME_HIBERNATE_HBM2DDL = "hibernate.hbm2ddl.auto";
 
 	

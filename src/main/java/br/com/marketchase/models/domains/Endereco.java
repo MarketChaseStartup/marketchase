@@ -62,8 +62,8 @@ public class Endereco {
 	private ZonaEndereco zonaEndereco;
 	
 	@OneToMany(cascade=CascadeType.ALL)
-	@JoinColumn(nullable=true)
-	private List<Contato> listaContato;
+	@JoinColumn(nullable=true,name="idEndereco")
+	private List<Contato> listaContatos;
 
 	public Endereco(){
 		
@@ -166,11 +166,11 @@ public class Endereco {
 	}
 
 	public List<Contato> getListaContato() {
-		return listaContato;
+		return listaContatos;
 	}
 
-	public void setListaContato(List<Contato> listaContato) {
-		this.listaContato = listaContato;
+	public void setListaContato(List<Contato> listaContatos) {
+		this.listaContatos = listaContatos;
 	}
 
 	@Override

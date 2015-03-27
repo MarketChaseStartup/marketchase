@@ -3,6 +3,7 @@ package br.com.marketchase.models.domains;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -34,6 +35,7 @@ public class Loja{
 	
 	@OneToMany(cascade=CascadeType.ALL)
 	@JoinColumn(nullable=false)
+	@Column(name="idLoja")
 	private List<Endereco> listaEndereco;
 	
 	public Loja(){

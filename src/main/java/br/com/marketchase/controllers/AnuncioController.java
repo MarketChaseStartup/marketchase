@@ -19,8 +19,8 @@ import br.com.marketchase.models.resources.AnuncioResource;
 @RestController
 @RequestMapping("/anuncio")
 public class AnuncioController {
-	
-	@Autowired
+	///////
+	/*@Autowired
 	private AnuncioService anuncioService;
 	
 	@ResponseBody
@@ -60,7 +60,7 @@ public class AnuncioController {
 	}*/
 	
 	
-	@ResponseBody
+	/*@ResponseBody
 	@RequestMapping(method=RequestMethod.GET, value="/{id}")
 	public ResponseEntity<AnuncioResource> find(@PathVariable Long id){
 		AnuncioResource resource = anuncioService.find(id);
@@ -86,5 +86,6 @@ public class AnuncioController {
 	public ResponseEntity<List<AnuncioResource>> findByCategoria(@PathVariable AnuncioCategoria categoria){
 		List<AnuncioResource> resources = anuncioService.findByCategoria(categoria);
 		return new ResponseEntity<List<AnuncioResource>>(resources, HttpStatus.OK);
-	}
+	}*/
+	/////////
 }
