@@ -18,8 +18,8 @@ import org.hibernate.envers.Audited;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import br.com.marketchase.enums.TipoAnuncio;
-import br.com.marketchase.model.enums.AnuncioCategoria;
-import br.com.marketchase.model.enums.AnuncioTipoArquivo;
+import br.com.marketchase.models.enums.AnuncioCategoria;
+import br.com.marketchase.models.enums.AnuncioTipoArquivo;
 
 @Entity
 @Table(name = "anuncios")

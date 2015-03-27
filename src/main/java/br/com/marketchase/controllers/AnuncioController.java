@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.marketchase.model.enums.AnuncioCategoria;
-import br.com.marketchase.model.services.AnuncioService;
-import br.com.marketchase.models.resources.v1.AnuncioResource;
+import br.com.marketchase.models.services.AnuncioService;
+import br.com.marketchase.models.enums.AnuncioCategoria;
+import br.com.marketchase.models.resources.AnuncioResource;
 
 @RestController
 @RequestMapping("/anuncio")

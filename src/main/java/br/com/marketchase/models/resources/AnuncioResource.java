@@ -1,4 +1,4 @@
-package br.com.marketchase.models.resources.v1;
+package br.com.marketchase.models.resources;
 
 import java.util.Date;
 
@@ -11,8 +11,8 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
-import br.com.marketchase.model.enums.AnuncioCategoria;
-import br.com.marketchase.model.enums.AnuncioTipoArquivo;
+import br.com.marketchase.models.enums.AnuncioCategoria;
+import br.com.marketchase.models.enums.AnuncioTipoArquivo;
 
 public class AnuncioResource {
 	

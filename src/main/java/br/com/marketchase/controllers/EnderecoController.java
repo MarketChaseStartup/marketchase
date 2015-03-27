@@ -1,4 +1,4 @@
-package br.com.marketchase.controllers.rest;
+package br.com.marketchase.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.marketchase.models.resources.EnderecoResource;
-import br.com.marketchase.models.service.EnderecoService;
+import br.com.marketchase.models.services.EnderecoService;
 
 @RestController
 @RequestMapping("/enderecos")

@@ -1,4 +1,4 @@
-package br.com.marketchase.controllers.rest;
+package br.com.marketchase.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.marketchase.models.resources.JsonError;
 import br.com.marketchase.models.resources.LojaResource;
-import br.com.marketchase.models.service.LojaService;
+import br.com.marketchase.models.services.LojaService;
 
 @RestController
 @RequestMapping("/lojas")

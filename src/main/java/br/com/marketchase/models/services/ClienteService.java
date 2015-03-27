@@ -1,4 +1,4 @@
-package br.com.marketchase.models.service;
+package br.com.marketchase.models.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

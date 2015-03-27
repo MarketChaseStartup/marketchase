@@ -1,6 +1,5 @@
 package br.com.marketchase.models.resources;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;

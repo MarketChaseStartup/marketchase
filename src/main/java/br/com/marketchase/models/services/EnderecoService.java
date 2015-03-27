@@ -1,4 +1,4 @@
-package br.com.marketchase.models.service;
+package br.com.marketchase.models.services;
 
 import java.util.ArrayList;
 import java.util.List;

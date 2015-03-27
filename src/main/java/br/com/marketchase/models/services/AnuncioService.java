@@ -1,4 +1,4 @@
-package br.com.marketchase.model.services;
+package br.com.marketchase.models.services;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -8,12 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.marketchase.exceptions.AnuncioNotFoundException;
-import br.com.marketchase.model.enums.AnuncioCategoria;
-import br.com.marketchase.model.repositories.AnuncioRepository;
-import br.com.marketchase.model.repositories.LojaRepository;
+import br.com.marketchase.exceptions.AnuncioException;
+import br.com.marketchase.models.repositories.AnuncioRepository;
+import br.com.marketchase.models.repositories.LojaRepository;
 import br.com.marketchase.models.domains.Anuncio;
-import br.com.marketchase.models.resources.v1.AnuncioResource;
+import br.com.marketchase.models.enums.AnuncioCategoria;
+import br.com.marketchase.models.resources.AnuncioResource;
 
 @Service
 public class AnuncioService {
@@ -113,7 +113,7 @@ public class AnuncioService {
 		AnuncioResource resource = new AnuncioResource();
 		
 		Anuncio anuncio = anuncioRepository.findOne(id);		
-		if (anuncio == null) throw new AnuncioNotFoundException();
+		if (anuncio == null) throw new AnuncioException();
 
 		if(anuncio.getDescricao() != null)
 			resource.setDescricao(anuncio.getDescricao());
@@ -134,7 +134,7 @@ public class AnuncioService {
 		List<AnuncioResource> resources = new ArrayList<AnuncioResource>();
 		
 		List<Anuncio> anuncios = anuncioRepository.findAll();		
-		if (anuncios == null) throw new AnuncioNotFoundException();
+		if (anuncios == null) throw new AnuncioException();
 		
 		for (Anuncio anuncio : anuncios) {
 			AnuncioResource resource = new AnuncioResource();
@@ -161,7 +161,7 @@ public class AnuncioService {
         List<AnuncioResource> resources = new ArrayList<AnuncioResource>();
 		
 		List<Anuncio> anuncios = anuncioRepository.findByLoja(id);		
-		if (anuncios == null) throw new AnuncioNotFoundException();
+		if (anuncios == null) throw new AnuncioException();
 		
 		for (Anuncio anuncio : anuncios) {
 			AnuncioResource resource = new AnuncioResource();
@@ -188,7 +188,7 @@ public class AnuncioService {
         List<AnuncioResource> resources = new ArrayList<AnuncioResource>();
 		
 		List<Anuncio> anuncios = anuncioRepository.findByCategoria(categoria);		
-		if (anuncios == null) throw new AnuncioNotFoundException();
+		if (anuncios == null) throw new AnuncioException();
 		
 		for (Anuncio anuncio : anuncios) {
 			AnuncioResource resource = new AnuncioResource();
