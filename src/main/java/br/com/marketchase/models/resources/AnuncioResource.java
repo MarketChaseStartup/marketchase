@@ -11,8 +11,8 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
-import br.com.marketchase.models.enums.AnuncioCategoria;
-import br.com.marketchase.models.enums.AnuncioTipoArquivo;
+import br.com.marketchase.enums.CategoriaAnuncio;
+import br.com.marketchase.enums.TipoAnuncio;;
 
 public class AnuncioResource {
 	
@@ -27,17 +27,15 @@ public class AnuncioResource {
 	private String nomeArquivo;
 	
 	@NotNull
-	@NotEmpty
 	@Temporal(TemporalType.DATE)
 	private Date dataPostagem;
 	
 	@NotNull
-	@NotEmpty
-	@Temporal(TemporalType.DATE)
-	private Date dataInicio;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date dataHoraInicio;
 	
-	@Temporal(TemporalType.DATE)
-	private Date dataVencimento;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date dataHoraVencimento;
 	
 	@Column(columnDefinition = "true")
 	private boolean permanente;
@@ -47,14 +45,15 @@ public class AnuncioResource {
 	
 	@NotNull @NotEmpty
 	@Enumerated(EnumType.STRING)
-	private AnuncioTipoArquivo tipoArquivo;
+	private TipoAnuncio tipoAnuncio;
 	
 	@NotNull
 	@Enumerated(EnumType.STRING)
-	private AnuncioCategoria categoria;
+	private CategoriaAnuncio categoria;
 	
 	@NotNull
-	private long idLoja;
+	private LojaResource loja;
+	
 
 	public String getDescricao() {
 		return descricao;
@@ -88,20 +87,20 @@ public class AnuncioResource {
 		this.dataPostagem = dataPostagem;
 	}
 
-	public Date getDataInicio() {
-		return dataInicio;
+	public Date getDataHoraInicio() {
+		return dataHoraInicio;
 	}
 
-	public void setDataInicio(Date dataInicio) {
-		this.dataInicio = dataInicio;
+	public void setDataHoraInicio(Date dataHoraInicio) {
+		this.dataHoraInicio = dataHoraInicio;
 	}
 
-	public Date getDataVencimento() {
-		return dataVencimento;
+	public Date getDataHoraVencimento() {
+		return dataHoraVencimento;
 	}
 
-	public void setDataVencimento(Date dataVencimento) {
-		this.dataVencimento = dataVencimento;
+	public void setDataHoraVencimento(Date dataHoraVencimento) {
+		this.dataHoraVencimento = dataHoraVencimento;
 	}
 
 	public boolean isPermanente() {
@@ -120,106 +119,28 @@ public class AnuncioResource {
 		this.ativo = ativo;
 	}
 
-	public AnuncioTipoArquivo getTipoArquivo() {
-		return tipoArquivo;
+	public TipoAnuncio getTipoAnuncio() {
+		return tipoAnuncio;
 	}
 
-	public void setTipoArquivo(AnuncioTipoArquivo tipoArquivo) {
-		this.tipoArquivo = tipoArquivo;
+	public void setTipoAnuncio(TipoAnuncio tipoAnuncio) {
+		this.tipoAnuncio = tipoAnuncio;
 	}
 
-	public AnuncioCategoria getCategoria() {
+	public CategoriaAnuncio getCategoria() {
 		return categoria;
 	}
 
-	public void setCategoria(AnuncioCategoria categoria) {
+	public void setCategoria(CategoriaAnuncio categoria) {
 		this.categoria = categoria;
 	}
 
-	public long getIdLoja() {
-		return idLoja;
+	public LojaResource getLoja() {
+		return loja;
 	}
 
-	public void setIdLoja(long idLoja) {
-		this.idLoja = idLoja;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + (ativo ? 1231 : 1237);
-		result = prime * result
-				+ ((caminhoArquivo == null) ? 0 : caminhoArquivo.hashCode());
-		result = prime * result
-				+ ((categoria == null) ? 0 : categoria.hashCode());
-		result = prime * result
-				+ ((dataInicio == null) ? 0 : dataInicio.hashCode());
-		result = prime * result
-				+ ((dataPostagem == null) ? 0 : dataPostagem.hashCode());
-		result = prime * result
-				+ ((dataVencimento == null) ? 0 : dataVencimento.hashCode());
-		result = prime * result
-				+ ((descricao == null) ? 0 : descricao.hashCode());
-		result = prime * result + (int) (idLoja ^ (idLoja >>> 32));
-		result = prime * result
-				+ ((nomeArquivo == null) ? 0 : nomeArquivo.hashCode());
-		result = prime * result + (permanente ? 1231 : 1237);
-		result = prime * result
-				+ ((tipoArquivo == null) ? 0 : tipoArquivo.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		AnuncioResource other = (AnuncioResource) obj;
-		if (ativo != other.ativo)
-			return false;
-		if (caminhoArquivo == null) {
-			if (other.caminhoArquivo != null)
-				return false;
-		} else if (!caminhoArquivo.equals(other.caminhoArquivo))
-			return false;
-		if (categoria != other.categoria)
-			return false;
-		if (dataInicio == null) {
-			if (other.dataInicio != null)
-				return false;
-		} else if (!dataInicio.equals(other.dataInicio))
-			return false;
-		if (dataPostagem == null) {
-			if (other.dataPostagem != null)
-				return false;
-		} else if (!dataPostagem.equals(other.dataPostagem))
-			return false;
-		if (dataVencimento == null) {
-			if (other.dataVencimento != null)
-				return false;
-		} else if (!dataVencimento.equals(other.dataVencimento))
-			return false;
-		if (descricao == null) {
-			if (other.descricao != null)
-				return false;
-		} else if (!descricao.equals(other.descricao))
-			return false;
-		if (idLoja != other.idLoja)
-			return false;
-		if (nomeArquivo == null) {
-			if (other.nomeArquivo != null)
-				return false;
-		} else if (!nomeArquivo.equals(other.nomeArquivo))
-			return false;
-		if (permanente != other.permanente)
-			return false;
-		if (tipoArquivo != other.tipoArquivo)
-			return false;
-		return true;
+	public void setLoja(LojaResource loja) {
+		this.loja = loja;
 	}
 
 }

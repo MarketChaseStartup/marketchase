@@ -7,7 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import br.com.marketchase.models.domains.Anuncio;
-import br.com.marketchase.models.enums.AnuncioCategoria;
+import br.com.marketchase.enums.CategoriaAnuncio;
 
 @Repository
 public interface AnuncioRepository extends CrudRepository<Anuncio, Long> {
@@ -19,7 +19,7 @@ public interface AnuncioRepository extends CrudRepository<Anuncio, Long> {
 	public List<Anuncio> findByLoja(Long id);
 	
 	@Query("SELECT an FROM Anuncio an WHERE an.categoria = ?")
-	public List<Anuncio> findByCategoria(AnuncioCategoria categoria);
+	public List<Anuncio> findByCategoria(CategoriaAnuncio categoria);
 	
 	@Query("SELECT an FROM Anuncio an WHERE an.ativo = 'true' AND an.permanente = 'true'")
 	public List<Anuncio> findByAtivoNaoPermanentes();

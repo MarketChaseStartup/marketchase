@@ -8,12 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.marketchase.enums.CategoriaAnuncio;
 import br.com.marketchase.exceptions.AnuncioException;
+import br.com.marketchase.models.domains.Anuncio;
+import br.com.marketchase.models.domains.Loja;
 import br.com.marketchase.models.repositories.AnuncioRepository;
 import br.com.marketchase.models.repositories.LojaRepository;
-import br.com.marketchase.models.domains.Anuncio;
-import br.com.marketchase.models.enums.AnuncioCategoria;
 import br.com.marketchase.models.resources.AnuncioResource;
+import br.com.marketchase.parser.AnuncioParser;
 
 @Service
 public class AnuncioService {
@@ -24,44 +26,40 @@ public class AnuncioService {
 	@Autowired
 	private LojaRepository lojaRepository;
 	
+	@Autowired
+	private AnuncioParser anuncioParser;
+	
 	@Transactional
-	public Anuncio save(AnuncioResource resource){
-		Anuncio anuncio = new Anuncio();
-		
-		if (resource.getDescricao() != null)
-			anuncio.setDescricao(resource.getDescricao());
-		anuncio.setNomeArquivo(resource.getNomeArquivo());
-		anuncio.setTipoArquivo(resource.getTipoArquivo());
-		anuncio.setCategoria(resource.getCategoria());
+	public Anuncio save(AnuncioResource anuncioResource){
+		Anuncio anuncio = new Anuncio();		
 		anuncio.setDataPostagem(new Date());
-		anuncio.setDataInicio(resource.getDataInicio());
-		if (resource.getDataInicio().after(new Date()))
-			anuncio.setAtivo(false);
-		anuncio.setPermanente(resource.isPermanente());
-		if (resource.isPermanente() == false)
-			anuncio.setDataVencimento(resource.getDataVencimento());
-		anuncio.setLoja(lojaRepository.findOne(resource.getIdLoja()));
+		anuncioResource.setDataPostagem(new Date());
+		
+		anuncio = anuncioParser.paraDomain(anuncioResource, anuncio);
+		
+		Loja loja = lojaRepository.findOne(anuncioResource.getLoja().getCodigo());
+		anuncio.setLoja(loja);
+		loja.setListaAnuncios(new ArrayList<Anuncio>());
+		loja.getListaAnuncios().add(anuncio);
 		
 		return anuncioRepository.save(anuncio);
 	}
 	
 	@Transactional
-	public Anuncio update(Long id, AnuncioResource resource){
+	public Anuncio update(Long id, AnuncioResource anuncioResource){
 		Anuncio anuncio = anuncioRepository.findOne(id);
 		
-		if (resource.getDescricao() != null)
-			anuncio.setDescricao(resource.getDescricao());
-		anuncio.setNomeArquivo(resource.getNomeArquivo());
-		anuncio.setTipoArquivo(resource.getTipoArquivo());
-		anuncio.setCategoria(resource.getCategoria());
-		anuncio.setDataInicio(resource.getDataInicio());
-		if (resource.getDataInicio().after(new Date()))
-			anuncio.setAtivo(false);
-		anuncio.setPermanente(resource.isPermanente());
-		if (resource.isPermanente() == false)
-			anuncio.setDataVencimento(resource.getDataVencimento());
+		anuncio = anuncioParser.paraDomain(anuncioResource, anuncio);
 		
 		return anuncioRepository.save(anuncio);		
+	}
+	
+	@Transactional
+	public void desativarAtivarManual(Long id){
+		Anuncio anuncio = anuncioRepository.findOne(id);
+		
+		anuncio.setAtivo(!(anuncio.isAtivo()));
+		anuncioRepository.save(anuncio);
 	}
 	
 	@Transactional
@@ -69,7 +67,7 @@ public class AnuncioService {
 		List<Anuncio> anuncios = anuncioRepository.findByAtivoNaoPermanentes();
 		
 		for (Anuncio anuncio : anuncios) {
-		   if((anuncio.getDataVencimento().equals(new Date())) || (anuncio.getDataVencimento().before(new Date()))){
+		   if((anuncio.getDataHoraVencimento().equals(new Date())) || (anuncio.getDataHoraVencimento().before(new Date()))){
 		       anuncio.setAtivo(false);
 		       anuncioRepository.save(anuncio);
 		   }
@@ -77,21 +75,11 @@ public class AnuncioService {
 	}
 	
 	@Transactional
-	public void desativarManual(Long id){
-		Anuncio anuncio = anuncioRepository.findOne(id);
-		
-		if((anuncio.getDataVencimento().equals(new Date())) || (anuncio.getDataVencimento().before(new Date()))){
-		    anuncio.setAtivo(false);
-		    anuncioRepository.save(anuncio);
-		}
-	}
-	
-	@Transactional
-	public void sativarAutomatico(){
+	public void ativarAutomatico(){
 		List<Anuncio> anuncios = anuncioRepository.findByNaoAtivosNaoPermanentes();
 		
 		for (Anuncio anuncio : anuncios) {
-		   if((anuncio.getDataInicio().equals(new Date())) || (anuncio.getDataInicio().before(new Date()))){
+		   if((anuncio.getDataHoraInicio().equals(new Date())) || (anuncio.getDataHoraInicio().before(new Date()))){
 		       anuncio.setAtivo(true);
 		       anuncioRepository.save(anuncio);
 		   }
@@ -99,34 +87,15 @@ public class AnuncioService {
 	}
 	
 	@Transactional
-	public void ativarManual(Long id){
-		Anuncio anuncio = anuncioRepository.findOne(id);
-		
-		if((anuncio.getDataInicio().equals(new Date())) || (anuncio.getDataInicio().before(new Date()))){
-		    anuncio.setAtivo(true);
-		    anuncioRepository.save(anuncio);
-		}
-	}
-	
-	@Transactional
 	public AnuncioResource find(Long id){
-		AnuncioResource resource = new AnuncioResource();
+		AnuncioResource anuncioResource = new AnuncioResource();
 		
 		Anuncio anuncio = anuncioRepository.findOne(id);		
 		if (anuncio == null) throw new AnuncioException();
-
-		if(anuncio.getDescricao() != null)
-			resource.setDescricao(anuncio.getDescricao());
-		resource.setNomeArquivo(anuncio.getCaminhoArquivo());
-		resource.setTipoArquivo(anuncio.getTipoArquivo());
-		resource.setCategoria(anuncio.getCategoria());
-		resource.setDataPostagem(anuncio.getDataPostagem());
-		resource.setDataInicio(anuncio.getDataInicio());
-		resource.setPermanente(anuncio.isPermanente());
-		if(anuncio.isPermanente() == false)
-			resource.setDataVencimento(anuncio.getDataVencimento());		
 		
-		return resource;
+		anuncioResource = anuncioParser.paraResource(anuncio, anuncioResource);		
+		
+		return anuncioResource;
 	}
 	
 	@Transactional
@@ -137,20 +106,11 @@ public class AnuncioService {
 		if (anuncios == null) throw new AnuncioException();
 		
 		for (Anuncio anuncio : anuncios) {
-			AnuncioResource resource = new AnuncioResource();
+			AnuncioResource anuncioResource = new AnuncioResource();
 			
-			if(anuncio.getDescricao() != null)
-				resource.setDescricao(anuncio.getDescricao());
-			resource.setNomeArquivo(anuncio.getCaminhoArquivo());
-			resource.setTipoArquivo(anuncio.getTipoArquivo());
-			resource.setCategoria(anuncio.getCategoria());
-			resource.setDataPostagem(anuncio.getDataPostagem());
-			resource.setDataInicio(anuncio.getDataInicio());
-			resource.setPermanente(anuncio.isPermanente());
-			if(anuncio.isPermanente() == false)
-				resource.setDataVencimento(anuncio.getDataVencimento());
+			anuncioResource = anuncioParser.paraResource(anuncio, anuncioResource);	
 			
-			resources.add(resource);
+			resources.add(anuncioResource);
 		}
 		
 		return resources;
@@ -164,47 +124,29 @@ public class AnuncioService {
 		if (anuncios == null) throw new AnuncioException();
 		
 		for (Anuncio anuncio : anuncios) {
-			AnuncioResource resource = new AnuncioResource();
+			AnuncioResource anuncioResource = new AnuncioResource();
 			
-			if(anuncio.getDescricao() != null)
-				resource.setDescricao(anuncio.getDescricao());
-			resource.setNomeArquivo(anuncio.getCaminhoArquivo());
-			resource.setTipoArquivo(anuncio.getTipoArquivo());
-			resource.setCategoria(anuncio.getCategoria());
-			resource.setDataPostagem(anuncio.getDataPostagem());
-			resource.setDataInicio(anuncio.getDataInicio());
-			resource.setPermanente(anuncio.isPermanente());
-			if(anuncio.isPermanente() == false)
-				resource.setDataVencimento(anuncio.getDataVencimento());
+			anuncioResource = anuncioParser.paraResource(anuncio, anuncioResource);	
 			
-			resources.add(resource);
+			resources.add(anuncioResource);
 		}
 		
 		return resources;
 	}
 	
 	@Transactional
-	public List<AnuncioResource> findByCategoria(AnuncioCategoria categoria){
+	public List<AnuncioResource> findByCategoria(CategoriaAnuncio categoria){
         List<AnuncioResource> resources = new ArrayList<AnuncioResource>();
 		
 		List<Anuncio> anuncios = anuncioRepository.findByCategoria(categoria);		
 		if (anuncios == null) throw new AnuncioException();
 		
 		for (Anuncio anuncio : anuncios) {
-			AnuncioResource resource = new AnuncioResource();
+			AnuncioResource anuncioResource = new AnuncioResource();
 			
-			if(anuncio.getDescricao() != null)
-				resource.setDescricao(anuncio.getDescricao());
-			resource.setNomeArquivo(anuncio.getCaminhoArquivo());
-			resource.setTipoArquivo(anuncio.getTipoArquivo());
-			resource.setCategoria(anuncio.getCategoria());
-			resource.setDataPostagem(anuncio.getDataPostagem());
-			resource.setDataInicio(anuncio.getDataInicio());
-			resource.setPermanente(anuncio.isPermanente());
-			if(anuncio.isPermanente() == false)
-				resource.setDataVencimento(anuncio.getDataVencimento());
+			anuncioResource = anuncioParser.paraResource(anuncio, anuncioResource);	
 			
-			resources.add(resource);
+			resources.add(anuncioResource);
 		}
 		
 		return resources;

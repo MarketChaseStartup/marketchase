@@ -1,5 +1,5 @@
-package br.com.marketchase.models.enums;
+package br.com.marketchase.enums;
 
-public enum AnuncioCategoria {
+public enum CategoriaAnuncio {
 	ALIMENTOS, BRINQUEDOS, CALÇADOS, ELETRODOMESTICOS, ELETRONICOS, LAZER, MOVEIS, VESTUARIO; 
 }

@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.marketchase.models.services.AnuncioService;
-import br.com.marketchase.models.enums.AnuncioCategoria;
+import br.com.marketchase.enums.CategoriaAnuncio;
 import br.com.marketchase.models.resources.AnuncioResource;
 
 @RestController
 @RequestMapping("/anuncio")
 public class AnuncioController {
-	///////
-	/*@Autowired
+	
+	@Autowired
 	private AnuncioService anuncioService;
 	
 	@ResponseBody
@@ -39,8 +39,8 @@ public class AnuncioController {
 	
 	@ResponseBody
 	@RequestMapping(method=RequestMethod.DELETE, value="/{id}")
-	public ResponseEntity<String> desativarManual(@PathVariable Long id){
-		anuncioService.desativarManual(id);
+	public ResponseEntity<String> desativarAtivarManual(@PathVariable Long id){
+		anuncioService.desativarAtivarManual(id);
 		return new ResponseEntity<String>(HttpStatus.OK);
 	}
 	
@@ -48,19 +48,12 @@ public class AnuncioController {
 		anuncioService.desativarAutomatico();
 	}
 	
-	@ResponseBody
-	@RequestMapping(method=RequestMethod.DELETE, value="/{id}")
-	public ResponseEntity<String> ativarManual(@PathVariable Long id){
-		anuncioService.ativarManual(id);
-		return new ResponseEntity<String>(HttpStatus.OK);
+	public void ativarAutomatico(){
+		anuncioService.ativarAutomatico();
 	}
 	
-	/*public void ativarAutomatico(){
-		anuncioService.ativarAutomatico();
-	}*/
 	
-	
-	/*@ResponseBody
+	@ResponseBody
 	@RequestMapping(method=RequestMethod.GET, value="/{id}")
 	public ResponseEntity<AnuncioResource> find(@PathVariable Long id){
 		AnuncioResource resource = anuncioService.find(id);
@@ -75,17 +68,16 @@ public class AnuncioController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(method=RequestMethod.GET, value="/{id}")
-	public ResponseEntity<List<AnuncioResource>> findByLoja(@PathVariable Long id){
-		List<AnuncioResource> resources = anuncioService.findByLoja(id);
+	@RequestMapping(method=RequestMethod.GET, value="loja/{loja}")
+	public ResponseEntity<List<AnuncioResource>> findByLoja(@PathVariable Long loja){
+		List<AnuncioResource> resources = anuncioService.findByLoja(loja);
 		return new ResponseEntity<List<AnuncioResource>>(resources, HttpStatus.OK);
 	}
 	
 	@ResponseBody
-	@RequestMapping(method=RequestMethod.GET, value="/{id}")
-	public ResponseEntity<List<AnuncioResource>> findByCategoria(@PathVariable AnuncioCategoria categoria){
+	@RequestMapping(method=RequestMethod.GET, value="categoria/{categoria}")
+	public ResponseEntity<List<AnuncioResource>> findByCategoria(@PathVariable CategoriaAnuncio categoria){
 		List<AnuncioResource> resources = anuncioService.findByCategoria(categoria);
 		return new ResponseEntity<List<AnuncioResource>>(resources, HttpStatus.OK);
-	}*/
-	/////////
+	}
 }

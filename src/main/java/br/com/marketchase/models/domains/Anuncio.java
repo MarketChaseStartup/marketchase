@@ -20,8 +20,7 @@ import org.hibernate.envers.Audited;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import br.com.marketchase.enums.TipoAnuncio;
-import br.com.marketchase.models.enums.AnuncioCategoria;
-import br.com.marketchase.models.enums.AnuncioTipoArquivo;
+import br.com.marketchase.enums.CategoriaAnuncio;
 
 @Entity
 @Table(name = "anuncios")
@@ -45,25 +44,15 @@ public class Anuncio {
 	private String nomeArquivo;
 
 	@NotNull
-	@NotEmpty
 	@Temporal(TemporalType.DATE)
 	private Date dataPostagem;
 
 	@NotNull
-	@NotEmpty
-	@Temporal(TemporalType.DATE)
-	private Date dataInicio;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date dataHoraInicio;
 
-	@NotNull
-	@NotEmpty
-	@Temporal(TemporalType.TIME)
-	private Date horaInicio;
-
-	@Temporal(TemporalType.DATE)
-	private Date dataVencimento;
-
-	@Temporal(TemporalType.TIME)
-	private Date horaVemcimento;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date dataHoraVencimento;
 
 	private boolean permanente;
 
@@ -73,13 +62,11 @@ public class Anuncio {
 	private TipoAnuncio tipoAnuncio;
 
 	@Enumerated(EnumType.STRING)
-	private AnuncioCategoria categoria;
+	private CategoriaAnuncio categoria;
 	
-	@Enumerated(EnumType.STRING)
-	private AnuncioTipoArquivo tipoArquivo;
 	
 	@ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-	@JoinColumn(nullable=false)
+	@JoinColumn(nullable=true)
 	private Loja loja;
 	
 	public Anuncio() {
@@ -87,19 +74,17 @@ public class Anuncio {
 	}
 
 	public Anuncio(long codigo, String descricao, String caminhoArquivo,
-			String nomeArquivo, Date dataPostagem, Date dataInicio,
-			Date horaInicio, Date dataVencimento, Date horaVemcimento,
-			boolean permanente, boolean ativo, TipoAnuncio tipoAnuncio) {
+			String nomeArquivo, Date dataPostagem, Date dataHoraInicio,
+			Date dataHoraVencimento, boolean permanente, boolean ativo, 
+			TipoAnuncio tipoAnuncio) {
 		super();
 		this.codigo = codigo;
 		this.descricao = descricao;
 		this.caminhoArquivo = caminhoArquivo;
 		this.nomeArquivo = nomeArquivo;
 		this.dataPostagem = dataPostagem;
-		this.dataInicio = dataInicio;
-		this.horaInicio = horaInicio;
-		this.dataVencimento = dataVencimento;
-		this.horaVemcimento = horaVemcimento;
+		this.dataHoraInicio = dataHoraInicio;
+		this.dataHoraVencimento = dataHoraVencimento;
 		this.permanente = permanente;
 		this.ativo = ativo;
 		this.tipoAnuncio = tipoAnuncio;
@@ -145,36 +130,21 @@ public class Anuncio {
 		this.dataPostagem = dataPostagem;
 	}
 
-	public Date getDataInicio() {
-		return dataInicio;
+	public Date getDataHoraInicio() {
+		return dataHoraInicio;
 	}
 
-	public void setDataInicio(Date dataInicio) {
-		this.dataInicio = dataInicio;
+	public void setDataHoraInicio(Date dataInicio) {
+		this.dataHoraInicio = dataInicio;
 	}
 
-	public Date getHoraInicio() {
-		return horaInicio;
+
+	public Date getDataHoraVencimento() {
+		return dataHoraVencimento;
 	}
 
-	public void setHoraInicio(Date horaInicio) {
-		this.horaInicio = horaInicio;
-	}
-
-	public Date getDataVencimento() {
-		return dataVencimento;
-	}
-
-	public void setDataVencimento(Date dataVencimento) {
-		this.dataVencimento = dataVencimento;
-	}
-
-	public Date getHoraVemcimento() {
-		return horaVemcimento;
-	}
-
-	public void setHoraVemcimento(Date horaVemcimento) {
-		this.horaVemcimento = horaVemcimento;
+	public void setDataHoraVencimento(Date dataHoraVencimento) {
+		this.dataHoraVencimento = dataHoraVencimento;
 	}
 
 	public boolean isPermanente() {
@@ -197,19 +167,11 @@ public class Anuncio {
 		return tipoAnuncio;
 	}
 
-	public AnuncioTipoArquivo getTipoArquivo() {
-		return tipoArquivo;
-	}
-
-	public void setTipoArquivo(AnuncioTipoArquivo tipoArquivo) {
-		this.tipoArquivo = tipoArquivo;
-	}
-
-	public AnuncioCategoria getCategoria() {
+	public CategoriaAnuncio getCategoria() {
 		return categoria;
 	}
 
-	public void setCategoria(AnuncioCategoria categoria) {
+	public void setCategoria(CategoriaAnuncio categoria) {
 		this.categoria = categoria;
 	}
 

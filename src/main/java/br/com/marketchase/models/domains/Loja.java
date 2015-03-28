@@ -38,6 +38,11 @@ public class Loja{
 	@Column(name="idLoja")
 	private List<Endereco> listaEndereco;
 	
+	@OneToMany(cascade=CascadeType.ALL)
+	@JoinColumn(nullable=true)
+	@Column(name="idLoja")
+	private List<Anuncio> listaAnuncios;
+
 	public Loja(){
 		super();
 	}
@@ -90,6 +95,14 @@ public class Loja{
 		this.listaEndereco = listaEndereco;
 	}
 
+	public List<Anuncio> getListaAnuncios() {
+		return listaAnuncios;
+	}
+
+	public void setListaAnuncios(List<Anuncio> listaAnuncios) {
+		this.listaAnuncios = listaAnuncios;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
