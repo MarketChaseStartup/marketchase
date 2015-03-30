@@ -19,7 +19,7 @@ public class Application implements WebApplicationInitializer{
 	private final String PACKAGE                          = "br.com.marketchase.config"; 
 	private final String MAPPING                          = "/*";
 	private final String SERVLET_NAME                     = "appServlet";
-	private final String URL_PATTERNS                     = "/";
+	private final String URL_PATTERNS                     = "/*";
 	private final String FILTER_NAME                      = "openEntityManagerInViewFilter";
 	private final String ENTITY_MANAGER_FACTORY_BEAN_NAME = "entityManagerFactory";
 	
@@ -33,13 +33,7 @@ public class Application implements WebApplicationInitializer{
 		appServlet.setLoadOnStartup(1);
 		appServlet.addMapping(MAPPING);
 		servletContext.addListener(new ContextLoaderListener(applicationContext)); 
-		FilterRegistration.Dynamic filter = servletContext.addFilter(FILTER_NAME, buildOpenEntityManagerFilter());
-		
-		/*filter.setInitParameter("entityManagerFactoryBeanName","persistence.EntityManagerFactory");
-		filter.setInitParameter(FILTER_NAME, "entityManagerFactory");
-		filter.setInitParameter("singleSession", "true");
-		filter.setInitParameter("flushMode", "AUTO");*/
-		
+		FilterRegistration.Dynamic filter = servletContext.addFilter(FILTER_NAME, buildOpenEntityManagerFilter());		
 		filter.addMappingForUrlPatterns(getDispatcherTypes(), false, URL_PATTERNS);
 	}
 

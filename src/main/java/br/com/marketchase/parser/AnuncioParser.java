@@ -35,7 +35,7 @@ public class AnuncioParser implements ObjectParser<Anuncio, AnuncioResource> {
 		if (anuncioResource.getDataHoraInicio().after(anuncioResource.getDataPostagem())){
 			anuncioResource.setAtivo(false);
 		}
-		anuncio.setTipoArquivo(anuncioResource.getTipoAnuncio());
+		anuncio.setTipoAnuncio(anuncioResource.getTipoAnuncio());
 		anuncio.setCategoria(anuncioResource.getCategoria());
 		return anuncio;
 	}

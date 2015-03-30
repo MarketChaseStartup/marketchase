@@ -107,8 +107,8 @@ public class LojaService {
 		List<LojaResource> listaLojasResource = new ArrayList<LojaResource>();
 		for (Loja l : listaLojas) {
 			LojaResource lojaResource = new LojaResource();
+			lojaResource.setListaEnderecos(new ArrayList<EnderecoResource>());
 			lojaResource = lojaParser.paraResource(l, lojaResource);
-			l.setListaEndereco(new ArrayList<Endereco>());
 			for (Endereco e : l.getListaEndereco()) {
 				EnderecoResource enderecoResource = new EnderecoResource();
 				enderecoResource = enderecoParser.paraResource(e, enderecoResource);
