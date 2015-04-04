@@ -10,6 +10,7 @@ public class AnuncioParser implements ObjectParser<Anuncio, AnuncioResource> {
 
 	@Override
 	public AnuncioResource paraResource(Anuncio anuncio, AnuncioResource anuncioResource) {
+		anuncioResource.setCodigo(anuncio.getCodigo());
 		anuncioResource.setDescricao(anuncio.getDescricao());
 		anuncioResource.setCaminhoArquivo(anuncio.getCaminhoArquivo());
 		anuncioResource.setNomeArquivo(anuncio.getNomeArquivo());
@@ -25,6 +26,7 @@ public class AnuncioParser implements ObjectParser<Anuncio, AnuncioResource> {
 	
 	@Override
 	public Anuncio paraDomain(AnuncioResource anuncioResource, Anuncio anuncio) {
+		anuncio.setCodigo(anuncioResource.getCodigo());
 		anuncio.setDescricao(anuncioResource.getDescricao());
 		anuncio.setCaminhoArquivo(anuncioResource.getCaminhoArquivo());
 		anuncio.setNomeArquivo(anuncioResource.getNomeArquivo());
