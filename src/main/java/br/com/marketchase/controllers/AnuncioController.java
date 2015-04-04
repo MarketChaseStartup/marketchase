@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.marketchase.models.services.AnuncioService;
 import br.com.marketchase.enums.CategoriaAnuncio;
+import br.com.marketchase.models.domains.Anuncio;
 import br.com.marketchase.models.resources.AnuncioResource;
 
 @RestController
@@ -25,9 +26,9 @@ public class AnuncioController {
 	
 	@ResponseBody
 	@RequestMapping(method=RequestMethod.POST)
-	public ResponseEntity<AnuncioResource> save(@RequestBody AnuncioResource resource){
-		anuncioService.save(resource);
-		return new ResponseEntity<AnuncioResource>(resource, HttpStatus.CREATED);
+	public ResponseEntity<Long> save(@RequestBody AnuncioResource resource){
+		Long codigo = anuncioService.save(resource);
+		return new ResponseEntity<Long>(codigo, HttpStatus.CREATED);
 	}
 	
 	@ResponseBody

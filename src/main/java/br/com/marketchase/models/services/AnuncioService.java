@@ -30,7 +30,7 @@ public class AnuncioService {
 	private AnuncioParser anuncioParser;
 	
 	@Transactional
-	public Anuncio save(AnuncioResource anuncioResource){
+	public long save(AnuncioResource anuncioResource){
 		Anuncio anuncio = new Anuncio();		
 		anuncio.setDataPostagem(new Date());
 		anuncioResource.setDataPostagem(new Date());
@@ -42,7 +42,9 @@ public class AnuncioService {
 		loja.setListaAnuncios(new ArrayList<Anuncio>());
 		loja.getListaAnuncios().add(anuncio);
 		
-		return anuncioRepository.save(anuncio);
+		anuncioRepository.save(anuncio);
+		
+		return anuncio.getCodigo();
 	}
 	
 	@Transactional
