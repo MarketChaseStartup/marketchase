@@ -16,6 +16,8 @@ import br.com.marketchase.enums.TipoAnuncio;;
 
 public class AnuncioResource {
 	
+	private long codigo;
+	
 	private String descricao;
 	
 	@NotNull
@@ -141,6 +143,14 @@ public class AnuncioResource {
 
 	public void setLoja(LojaResource loja) {
 		this.loja = loja;
+	}
+
+	public Long getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(Long codigo) {
+		this.codigo = codigo;
 	}
 
 }

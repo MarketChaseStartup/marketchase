@@ -25,9 +25,9 @@ public class AnuncioController {
 	
 	@ResponseBody
 	@RequestMapping(method=RequestMethod.POST)
-	public ResponseEntity<String> save(@RequestBody AnuncioResource resource){
+	public ResponseEntity<AnuncioResource> save(@RequestBody AnuncioResource resource){
 		anuncioService.save(resource);
-		return new ResponseEntity<String>(HttpStatus.CREATED);
+		return new ResponseEntity<AnuncioResource>(resource, HttpStatus.CREATED);
 	}
 	
 	@ResponseBody
