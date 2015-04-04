@@ -1,6 +1,6 @@
 */target/**
 */.settings/**
-*/src/main/resources/configuration/*
+*.properties
 *.jar
 *.war
 *.ear
