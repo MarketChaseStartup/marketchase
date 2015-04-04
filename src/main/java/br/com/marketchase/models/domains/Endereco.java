@@ -44,12 +44,10 @@ public class Endereco {
 	
 	@NotNull
 	@NotEmpty
-	@Column(columnDefinition="VARCHAR(10)")
 	private String estado;
 	
 	@NotNull
 	@NotEmpty
-	@Column(columnDefinition="VARCHAR(10)")
 	private String cidade;
 	
 	@NotNull

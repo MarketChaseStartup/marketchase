@@ -20,9 +20,9 @@ public class LojaController {
 	private LojaService lojaService;
 	
 	@RequestMapping(value = "", method = RequestMethod.POST)
-	public ResponseEntity<String> salvar(@RequestBody LojaResource lojaResource){
-		lojaService.salvar(lojaResource);
-		return new ResponseEntity<String>(HttpStatus.CREATED);
+	public ResponseEntity<JsonError> salvar(@RequestBody LojaResource lojaResource){
+		JsonError objeto = lojaService.salvar(lojaResource);
+		return new ResponseEntity<>(objeto,HttpStatus.CREATED);
 	}
 	
 	@RequestMapping(value = "/{codigo}", method = RequestMethod.PUT)

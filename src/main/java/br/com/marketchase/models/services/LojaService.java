@@ -17,6 +17,7 @@ import br.com.marketchase.models.repositories.LojaRepository;
 import br.com.marketchase.models.resources.ContatoResource;
 import br.com.marketchase.models.resources.EnderecoResource;
 import br.com.marketchase.models.resources.JsonError;
+import br.com.marketchase.models.resources.LoginResource;
 import br.com.marketchase.models.resources.LojaResource;
 import br.com.marketchase.parser.ContatoParser;
 import br.com.marketchase.parser.EnderecoParser;
@@ -67,7 +68,31 @@ public class LojaService {
 			listaEndereco.add(endereco);
 		}
 		loja.setListaEndereco(listaEndereco);
-		lojaRepository.save(loja);
+		loja = lojaRepository.save(loja);
+		
+		lojaResource = null;
+		lojaResource = new LojaResource();
+		lojaResource.setLogin(new LoginResource());
+		
+		lojaResource = lojaParser.paraResource(loja, lojaResource);
+		
+		lojaResource.setLogin(loginParser.paraResource(loja.getLogin(), lojaResource.getLogin()));
+		
+		List<EnderecoResource> listaEnderecoResource = new ArrayList<EnderecoResource>();
+		for (Endereco e : loja.getListaEndereco()){
+			EnderecoResource enderecoResource = new EnderecoResource();
+			enderecoResource = enderecoParser.paraResource(e, enderecoResource);
+			
+			ContatoResource contatoResource = new ContatoResource();
+			enderecoResource.setListaContatos(new ArrayList<ContatoResource>());
+			for(Contato c : e.getListaContato()){
+				contatoResource = contatoParser.paraResource(c, contatoResource);
+				enderecoResource.getListaContatos().add(contatoResource);
+			}
+			listaEnderecoResource.add(enderecoResource);
+		}
+		lojaResource.setListaEnderecos(new ArrayList<EnderecoResource>());
+		lojaResource.getListaEnderecos().addAll(listaEnderecoResource);
 		JsonError objeto = new JsonError();
 		objeto.setListaObjetos(new ArrayList<Object>());
 		objeto.getListaObjetos().add(lojaResource);
