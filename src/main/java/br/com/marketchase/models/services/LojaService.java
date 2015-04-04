@@ -111,7 +111,13 @@ public class LojaService {
 			lojaResource = lojaParser.paraResource(l, lojaResource);
 			for (Endereco e : l.getListaEndereco()) {
 				EnderecoResource enderecoResource = new EnderecoResource();
+				enderecoResource.setListaContatos(new ArrayList<ContatoResource>());
 				enderecoResource = enderecoParser.paraResource(e, enderecoResource);
+				for(Contato c : e.getListaContato()){
+					ContatoResource contatoResource = new ContatoResource();
+					contatoResource = contatoParser.paraResource(c, contatoResource);
+					enderecoResource.getListaContatos().add(contatoResource);
+				}
 				lojaResource.getListaEnderecos().add(enderecoResource);
 			}
 			listaLojasResource.add(lojaResource);
