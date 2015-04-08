@@ -1,13 +1,23 @@
 package br.com.marketchase.models.domains;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import javax.persistence.Column;
+import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 
-public class Login {
-	
+public class Login implements UserDetails{
+
+	private static final long serialVersionUID = 2777718532769110227L;
+
 	@NotNull
 	@NotEmpty
 	@Column(unique = true)
@@ -16,6 +26,9 @@ public class Login {
 	@NotNull
 	@NotEmpty
 	private String senha;
+	
+	@ManyToMany()
+	private List<Permissao> listaPermissao;
 	
 	public Login(){
 		
@@ -43,6 +56,14 @@ public class Login {
 		this.senha = senha;
 	}
 
+	public List<Permissao> getListaPermissao(){
+		return listaPermissao;
+	}
+	
+	public void setListaPermissao(List<Permissao> listaPermissao){
+		this.listaPermissao = listaPermissao;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -71,6 +92,45 @@ public class Login {
 				return false;
 		} else if (!senha.equals(other.senha))
 			return false;
+		return true;
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		List<GrantedAuthority> autorizacoes = new ArrayList<GrantedAuthority>();
+		for(Permissao p : getListaPermissao()){
+			autorizacoes.add(new SimpleGrantedAuthority(p.getNome()));
+		}
+		return autorizacoes;
+	}
+
+	@Override
+	public String getPassword() {
+		return this.senha;
+	}
+
+	@Override
+	public String getUsername() {
+		return this.usuario;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
 		return true;
 	}
 	
