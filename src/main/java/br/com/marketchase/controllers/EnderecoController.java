@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.marketchase.models.resources.EnderecoResource;
+import br.com.marketchase.models.resources.JsonError;
 import br.com.marketchase.models.services.EnderecoService;
 
 @RestController
@@ -19,9 +20,9 @@ public class EnderecoController {
 	private EnderecoService enderecoService;
 	
 	@RequestMapping(value = "", method = RequestMethod.POST)
-	public ResponseEntity<String> salvar(@RequestBody EnderecoResource enderecoResource){
-		enderecoService.salvar(enderecoResource);
-		return new ResponseEntity<String>(HttpStatus.CREATED);
+	public ResponseEntity<JsonError> salvar(@RequestBody EnderecoResource enderecoResource){
+		JsonError objeto = enderecoService.salvar(enderecoResource);
+		return new ResponseEntity<JsonError>(objeto,HttpStatus.CREATED);
 	}
 	
 	@RequestMapping(value = "/{codigo}", method = RequestMethod.PUT)

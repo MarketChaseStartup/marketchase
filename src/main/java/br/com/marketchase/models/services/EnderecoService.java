@@ -62,9 +62,22 @@ public class EnderecoService {
 				.getCodigo());
 		loja.setListaEndereco(new ArrayList<Endereco>());
 		loja.getListaEndereco().add(endereco);
+		
+		endereco = lojaRepository.saveAndFlush(loja).getListaEndereco().get(0);
+		
+		enderecoResource = null;
+		enderecoResource = new EnderecoResource();
+		enderecoResource.setListaContatos(new ArrayList<ContatoResource>());
+		enderecoResource = enderecoParser.paraResource(endereco, enderecoResource);
+		for(Contato c : endereco.getListaContato()){
+			ContatoResource contatoResource = new ContatoResource();
+			contatoResource = contatoParser.paraResource(c, contatoResource);
+			enderecoResource.getListaContatos().add(contatoResource);
+		}
+		
 		JsonError objeto = new JsonError();
 		objeto.setListaObjetos(new ArrayList<Object>());
-		objeto.getListaObjetos().add(endereco);
+		objeto.getListaObjetos().add(enderecoResource);
 		return objeto;
 	}
 

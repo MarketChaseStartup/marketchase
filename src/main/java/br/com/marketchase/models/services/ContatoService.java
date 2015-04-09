@@ -47,9 +47,13 @@ public class ContatoService {
 		Endereco endereco = enderecoRepository.findOneByCodigo(contatoResource.getEndereco().getCodigo());
 		endereco.setListaContato(new ArrayList<Contato>());
 		endereco.getListaContato().add(contato);
+		contato = enderecoRepository.saveAndFlush(endereco).getListaContato().get(0);
+		contatoResource.setEndereco(null);
+		contatoResource.setCliente(null);
+		contatoResource = contatoParser.paraResource(contato, contatoResource);
 		JsonError objeto = new JsonError();
 		objeto.setListaObjetos(new ArrayList<Object>());
-		objeto.getListaObjetos().add(contato);
+		objeto.getListaObjetos().add(contatoResource);
 		return objeto;
 	}
 

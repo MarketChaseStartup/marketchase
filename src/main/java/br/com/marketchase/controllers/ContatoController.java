@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.marketchase.models.resources.ContatoResource;
+import br.com.marketchase.models.resources.JsonError;
 import br.com.marketchase.models.services.ContatoService;
 
 @RestController
@@ -19,9 +20,9 @@ public class ContatoController {
 	private ContatoService contatoService;
 	
 	@RequestMapping(value = "", method = RequestMethod.POST)
-	public ResponseEntity<String> salvar(@RequestBody ContatoResource contatoResource){
-		contatoService.salvar(contatoResource);
-		return new ResponseEntity<String> (HttpStatus.CREATED);
+	public ResponseEntity<JsonError> salvar(@RequestBody ContatoResource contatoResource){
+		JsonError objeto = contatoService.salvar(contatoResource);
+		return new ResponseEntity<JsonError> (objeto,HttpStatus.CREATED);
 	}
 	
 	@RequestMapping(value = "/{codigo}", method = RequestMethod.PUT)
