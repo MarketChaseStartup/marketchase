@@ -3,6 +3,7 @@ package br.com.marketchase.models.domains;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -37,6 +38,7 @@ public class Anuncio {
 
 	@NotNull
 	@NotEmpty
+	@Column(name="caminho_arquivo",columnDefinition="blob")
 	private String caminhoArquivo;
 
 	@NotNull
