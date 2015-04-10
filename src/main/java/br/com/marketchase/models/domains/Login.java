@@ -4,20 +4,36 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.envers.Audited;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 
+@Entity
+@Audited
+@Table(name = "Login")
 public class Login implements UserDetails{
 
 	private static final long serialVersionUID = 2777718532769110227L;
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long codigo;
+	
 	@NotNull
 	@NotEmpty
 	@Column(unique = true)
@@ -27,6 +43,10 @@ public class Login implements UserDetails{
 	@NotEmpty
 	private String senha;
 	
+	@ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+	@JoinColumn(nullable=false)
+	private Loja loja;
+	
 	@ManyToMany()
 	private List<Permissao> listaPermissao;
 	
@@ -34,12 +54,21 @@ public class Login implements UserDetails{
 		
 	}
 
-	public Login(int codigo, String login, String senha){
+	public Login(long codigo, String login, String senha){
 		super();
+		this.codigo = codigo;
 		this.usuario = login;
 		this.senha = senha;
 	}
 
+	public long getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(long codigo) {
+		this.codigo = codigo;
+	}
+	
 	public String getUsuario() {
 		return usuario;
 	}
@@ -56,6 +85,14 @@ public class Login implements UserDetails{
 		this.senha = senha;
 	}
 
+	public Loja getLoja(){
+		return loja;
+	}
+	
+	public void setLoja(Loja loja){
+		this.loja = loja;
+	}
+	
 	public List<Permissao> getListaPermissao(){
 		return listaPermissao;
 	}

@@ -21,12 +21,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private final String ROLE_LOJISTA = "";
 	private final String FILTER_URL = "";
 	private final String LOGIN_PAGE = "";
-	private final String URL_PROCESSING = "";
+	private final String URL_PROCESSING = "/acesso";
 	private final String URL_SUCCESS = "";
 	private final String URL_FAILURE = "";
-	private final String USERNAME_PARAMETER = "";
-	private final String PASSWORD_PARAMETER = "";
-	private final String LOGOUT_URL = "";
+	private final String USERNAME_PARAMETER = "usuario";
+	private final String PASSWORD_PARAMETER = "senha";
+	private final String LOGOUT_URL = "/sair";
 	private final String LOGOUT_SUCCESS_URL = "";
 	
 	@Override
@@ -37,7 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			
 	}
 	
-	@Override
+	/*@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
 				.antMatchers(FILTER_URL).hasRole(ROLE_LOJISTA)//urls que o spring deve filtrar para liberar ou bloquear acesso
@@ -55,7 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 					.logoutUrl(LOGOUT_URL)
 					.logoutSuccessUrl(LOGOUT_SUCCESS_URL);
 			
-	}
+	}*/
 	
 	@Bean
 	public BCryptPasswordEncoder encoder() {

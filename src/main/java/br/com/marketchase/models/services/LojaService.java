@@ -50,8 +50,8 @@ public class LojaService {
 		Loja loja = new Loja();
 		loja = lojaParser.paraDomain(lojaResource, loja);
 
-		Login login = new Login();
-		loja.setLogin(loginParser.paraDomain(lojaResource.getLogin(), login));
+		/*Login login = new Login();
+		loja.setLogin(loginParser.paraDomain(lojaResource.getLogin(), login));*/
 
 		List<Endereco> listaEndereco = new ArrayList<Endereco>();
 		for (EnderecoResource e : lojaResource.getListaEnderecos()) {
@@ -76,7 +76,7 @@ public class LojaService {
 		
 		lojaResource = lojaParser.paraResource(loja, lojaResource);
 		
-		lojaResource.setLogin(loginParser.paraResource(loja.getLogin(), lojaResource.getLogin()));
+		//lojaResource.setLogin(loginParser.paraResource(loja.getLogin(), lojaResource.getLogin()));
 		
 		List<EnderecoResource> listaEnderecoResource = new ArrayList<EnderecoResource>();
 		for (Endereco e : loja.getListaEndereco()){
@@ -104,8 +104,8 @@ public class LojaService {
 		Loja loja = lojaRepository.findOneByCodigo(lojaResource.getCodigo());
 		loja = lojaParser.paraDomain(lojaResource, loja);
 
-		Login login = new Login();
-		loja.setLogin(loginParser.paraDomain(lojaResource.getLogin(), login));
+		/*Login login = new Login();
+		loja.setLogin(loginParser.paraDomain(lojaResource.getLogin(), login));*/
 
 		JsonError objeto = new JsonError();
 		objeto.setListaObjetos(new ArrayList<Object>());

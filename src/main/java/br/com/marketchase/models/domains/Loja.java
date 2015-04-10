@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -27,9 +26,6 @@ public class Loja{
 	
 	@NotNull
 	private String nome;
-	
-	@Embedded
-	private Login login;
 	
 	private boolean ativa;
 	
@@ -71,14 +67,6 @@ public class Loja{
 		this.nome = nome;
 	}
 
-	public Login getLogin() {
-		return login;
-	}
-
-	public void setLogin(Login login) {
-		this.login = login;
-	}
-
 	public boolean isAtiva() {
 		return ativa;
 	}
@@ -86,7 +74,7 @@ public class Loja{
 	public void setAtiva(boolean ativa) {
 		this.ativa = ativa;
 	}
-
+	
 	public List<Endereco> getListaEndereco() {
 		return listaEndereco;
 	}
@@ -102,13 +90,12 @@ public class Loja{
 	public void setListaAnuncios(List<Anuncio> listaAnuncios) {
 		this.listaAnuncios = listaAnuncios;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + (int) (codigo ^ (codigo >>> 32));
-		result = prime * result + ((login == null) ? 0 : login.hashCode());
+		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
 		return result;
 	}
 
@@ -121,12 +108,10 @@ public class Loja{
 		if (getClass() != obj.getClass())
 			return false;
 		Loja other = (Loja) obj;
-		if (codigo != other.codigo)
-			return false;
-		if (login == null) {
-			if (other.login != null)
+		if (nome == null) {
+			if (other.nome != null)
 				return false;
-		} else if (!login.equals(other.login))
+		} else if (!nome.equals(other.nome))
 			return false;
 		return true;
 	}
