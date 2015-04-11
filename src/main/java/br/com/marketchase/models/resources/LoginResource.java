@@ -9,6 +9,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("login")
 public class LoginResource {
 	
+	private long codigo;
+	
 	@NotNull
 	@NotEmpty
 	private String usuario;
@@ -18,7 +20,15 @@ public class LoginResource {
 	private String senha;
 
 	private LojaResource loja;
-
+	
+	public long getCodigo(){
+		return codigo;
+	}
+	
+	public void setCodigo(long codigo){
+		this.codigo = codigo;
+	}
+	
 	public String getUsuario() {
 		return usuario;
 	}
@@ -73,5 +83,7 @@ public class LoginResource {
 			return false;
 		return true;
 	}
+
+
 	
 }

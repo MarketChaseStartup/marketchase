@@ -14,6 +14,8 @@ import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
+import com.thetransactioncompany.cors.CORSFilter;
+
 public class Application implements WebApplicationInitializer{
 
 	private final String PACKAGE                          = "br.com.marketchase.config"; 
@@ -35,6 +37,8 @@ public class Application implements WebApplicationInitializer{
 		servletContext.addListener(new ContextLoaderListener(applicationContext)); 
 		FilterRegistration.Dynamic filter = servletContext.addFilter(FILTER_NAME, buildOpenEntityManagerFilter());		
 		filter.addMappingForUrlPatterns(getDispatcherTypes(), false, URL_PATTERNS);
+		FilterRegistration.Dynamic Corsfilter = servletContext.addFilter("CORS", new CORSFilter());
+		Corsfilter.addMappingForUrlPatterns(getDispatcherTypes(), false, URL_PATTERNS);
 	}
 
 	private AnnotationConfigWebApplicationContext buildApplicationContext(){

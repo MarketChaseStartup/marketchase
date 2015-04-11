@@ -1,5 +1,7 @@
 package br.com.marketchase.config;
 
+import java.util.LinkedHashMap;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,6 +10,10 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.authentication.DelegatingAuthenticationEntryPoint;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import br.com.marketchase.models.services.AuthenticationService;
 
@@ -20,14 +26,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	private final String ROLE_LOJISTA = "";
 	private final String FILTER_URL = "";
-	private final String LOGIN_PAGE = "";
-	private final String URL_PROCESSING = "/acesso";
-	private final String URL_SUCCESS = "";
-	private final String URL_FAILURE = "";
-	private final String USERNAME_PARAMETER = "usuario";
-	private final String PASSWORD_PARAMETER = "senha";
-	private final String LOGOUT_URL = "/sair";
-	private final String LOGOUT_SUCCESS_URL = "";
 	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -37,25 +35,30 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			
 	}
 	
-	/*@Override
+	@Bean
+	public DelegatingAuthenticationEntryPoint noAuthorizedEntryPoint(){
+		LinkedHashMap<RequestMatcher, AuthenticationEntryPoint> entryPoints = new LinkedHashMap<>();
+
+			AuthenticationEntryPoint wsEntryPoint = (request, response, exception) -> 
+			response.sendError(401, "No permission!");
+		
+		entryPoints.put(new AntPathRequestMatcher("/**"), wsEntryPoint);
+		
+		DelegatingAuthenticationEntryPoint noAuthorizedEntryPoint = new DelegatingAuthenticationEntryPoint(entryPoints);
+		noAuthorizedEntryPoint.setDefaultEntryPoint(wsEntryPoint);
+		return noAuthorizedEntryPoint;
+	}
+	
+	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-				.antMatchers(FILTER_URL).hasRole(ROLE_LOJISTA)//urls que o spring deve filtrar para liberar ou bloquear acesso
+				//.antMatchers(FILTER_URL).hasRole(ROLE_LOJISTA)//urls que o spring deve filtrar para liberar ou bloquear acesso
 				.anyRequest().permitAll()                     
-			.and()
-				.formLogin()
-					.loginPage(LOGIN_PAGE)
-					.loginProcessingUrl(URL_PROCESSING)
-					.defaultSuccessUrl(URL_SUCCESS)
-					.failureUrl(URL_FAILURE)
-					.usernameParameter(USERNAME_PARAMETER)
-					.passwordParameter(PASSWORD_PARAMETER)
 				.and()
-					.logout()
-					.logoutUrl(LOGOUT_URL)
-					.logoutSuccessUrl(LOGOUT_SUCCESS_URL);
-			
-	}*/
+					.httpBasic().authenticationEntryPoint(noAuthorizedEntryPoint())
+				.and()
+					.csrf().disable();		
+	}
 	
 	@Bean
 	public BCryptPasswordEncoder encoder() {

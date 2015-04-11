@@ -2,15 +2,15 @@ package br.com.marketchase.models.repositories;
 
 import java.util.List;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import br.com.marketchase.models.domains.Anuncio;
 import br.com.marketchase.enums.CategoriaAnuncio;
 
 @Repository
-public interface AnuncioRepository extends CrudRepository<Anuncio, Long> {
+public interface AnuncioRepository extends JpaRepository<Anuncio, Long> {
 	
 	@Query("SELECT an FROM Anuncio an WHERE an.ativo = 'true' ORDER BY an.dataPostagem DESC")
 	public List<Anuncio> findAll();

@@ -49,11 +49,11 @@ public class AnuncioService {
 	
 	@Transactional
 	public Anuncio update(Long id, AnuncioResource anuncioResource){
-		Anuncio anuncio = anuncioRepository.findOne(id);
+		Anuncio anuncio = new  Anuncio();
 		
 		anuncio = anuncioParser.paraDomain(anuncioResource, anuncio);
 		
-		return anuncioRepository.save(anuncio);		
+		return anuncioRepository.saveAndFlush(anuncio);		
 	}
 	
 	@Transactional

@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.marketchase.exceptions.LojaException;
 import br.com.marketchase.models.domains.Contato;
 import br.com.marketchase.models.domains.Endereco;
-import br.com.marketchase.models.domains.Login;
 import br.com.marketchase.models.domains.Loja;
 import br.com.marketchase.models.repositories.LojaRepository;
 import br.com.marketchase.models.resources.ContatoResource;
@@ -50,9 +49,6 @@ public class LojaService {
 		Loja loja = new Loja();
 		loja = lojaParser.paraDomain(lojaResource, loja);
 
-		/*Login login = new Login();
-		loja.setLogin(loginParser.paraDomain(lojaResource.getLogin(), login));*/
-
 		List<Endereco> listaEndereco = new ArrayList<Endereco>();
 		for (EnderecoResource e : lojaResource.getListaEnderecos()) {
 			Endereco endereco = new Endereco();
@@ -75,8 +71,6 @@ public class LojaService {
 		lojaResource.setLogin(new LoginResource());
 		
 		lojaResource = lojaParser.paraResource(loja, lojaResource);
-		
-		//lojaResource.setLogin(loginParser.paraResource(loja.getLogin(), lojaResource.getLogin()));
 		
 		List<EnderecoResource> listaEnderecoResource = new ArrayList<EnderecoResource>();
 		for (Endereco e : loja.getListaEndereco()){
@@ -101,12 +95,48 @@ public class LojaService {
 
 	@Transactional
 	public JsonError alterar(LojaResource lojaResource) throws LojaException {
-		Loja loja = lojaRepository.findOneByCodigo(lojaResource.getCodigo());
+		Loja loja = new Loja();
 		loja = lojaParser.paraDomain(lojaResource, loja);
 
-		/*Login login = new Login();
-		loja.setLogin(loginParser.paraDomain(lojaResource.getLogin(), login));*/
+		List<Endereco> listaEndereco = new ArrayList<Endereco>();
+		for (EnderecoResource e : lojaResource.getListaEnderecos()) {
+			Endereco endereco = new Endereco();
+			endereco = enderecoParser.paraDomain(e, endereco);
+			
+			Contato contato = new Contato();
+			endereco.setListaContato(new ArrayList<Contato>());
+			for (ContatoResource c : e.getListaContatos()) {
+				contato = contatoParser.paraDomain(c, contato);
+				
+				endereco.getListaContato().add(contato);
+			}
+			listaEndereco.add(endereco);
+		}
+		loja.setListaEndereco(listaEndereco);
+		loja = lojaRepository.saveAndFlush(loja);
 
+		lojaResource = null;
+		lojaResource = new LojaResource();
+		lojaResource.setLogin(new LoginResource());
+		
+		lojaResource = lojaParser.paraResource(loja, lojaResource);
+		
+		List<EnderecoResource> listaEnderecoResource = new ArrayList<EnderecoResource>();
+		for (Endereco e : loja.getListaEndereco()){
+			EnderecoResource enderecoResource = new EnderecoResource();
+			enderecoResource = enderecoParser.paraResource(e, enderecoResource);
+			
+			ContatoResource contatoResource = new ContatoResource();
+			enderecoResource.setListaContatos(new ArrayList<ContatoResource>());
+			for(Contato c : e.getListaContato()){
+				contatoResource = contatoParser.paraResource(c, contatoResource);
+				enderecoResource.getListaContatos().add(contatoResource);
+			}
+			listaEnderecoResource.add(enderecoResource);
+		}
+		lojaResource.setListaEnderecos(new ArrayList<EnderecoResource>());
+		lojaResource.getListaEnderecos().addAll(listaEnderecoResource);
+		
 		JsonError objeto = new JsonError();
 		objeto.setListaObjetos(new ArrayList<Object>());
 		objeto.getListaObjetos().add(lojaResource);

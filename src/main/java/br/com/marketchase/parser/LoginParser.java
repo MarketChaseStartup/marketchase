@@ -15,6 +15,7 @@ public class LoginParser implements ObjectParser<Login, LoginResource> {
 	
 	@Override
 	public Login paraDomain(LoginResource loginResource , Login login) {
+		login.setCodigo(loginResource.getCodigo());
 		login.setUsuario(loginResource.getUsuario());
 		login.setSenha(loginResource.getSenha());
 		return login;
@@ -22,6 +23,7 @@ public class LoginParser implements ObjectParser<Login, LoginResource> {
 
 	@Override
 	public LoginResource paraResource(Login login, LoginResource loginResource) {
+		loginResource.setCodigo(login.getCodigo());
 		loginResource.setUsuario(login.getUsuario());
 		loginResource.setSenha(login.getSenha());
 		return loginResource;

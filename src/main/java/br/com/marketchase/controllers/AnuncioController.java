@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.marketchase.models.services.AnuncioService;
 import br.com.marketchase.enums.CategoriaAnuncio;
-import br.com.marketchase.models.domains.Anuncio;
 import br.com.marketchase.models.resources.AnuncioResource;
 
 @RestController
