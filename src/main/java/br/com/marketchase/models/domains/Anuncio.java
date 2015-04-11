@@ -38,7 +38,7 @@ public class Anuncio {
 
 	@NotNull
 	@NotEmpty
-	@Column(name="caminho_arquivo",columnDefinition="blob")
+	@Column(name="caminho_arquivo",columnDefinition="longblob")
 	private String caminhoArquivo;
 
 	@NotNull

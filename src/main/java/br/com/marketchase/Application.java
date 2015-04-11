@@ -24,6 +24,10 @@ public class Application implements WebApplicationInitializer{
 	private final String URL_PATTERNS                     = "/*";
 	private final String FILTER_NAME                      = "openEntityManagerInViewFilter";
 	private final String ENTITY_MANAGER_FACTORY_BEAN_NAME = "entityManagerFactory";
+	private final String CORS_ALLOW_ORIGIN                = "cors.allowOrigin";
+	private final String ORIGINS_REQUEST                  = "*";
+	private final String CORS_SUPPORTED_METHOD            = "cors.supportedMethods";
+	private final String METHOD_ACCEPT                    = "GET,POST,DELETE,PUT,OPTIONS,HEAD";
 	
 	@Override
 	public void onStartup(ServletContext servletContext) throws ServletException {
@@ -38,6 +42,8 @@ public class Application implements WebApplicationInitializer{
 		FilterRegistration.Dynamic filter = servletContext.addFilter(FILTER_NAME, buildOpenEntityManagerFilter());		
 		filter.addMappingForUrlPatterns(getDispatcherTypes(), false, URL_PATTERNS);
 		FilterRegistration.Dynamic Corsfilter = servletContext.addFilter("CORS", new CORSFilter());
+		Corsfilter.setInitParameter(CORS_ALLOW_ORIGIN, ORIGINS_REQUEST);
+		Corsfilter.setInitParameter(CORS_SUPPORTED_METHOD, METHOD_ACCEPT);
 		Corsfilter.addMappingForUrlPatterns(getDispatcherTypes(), false, URL_PATTERNS);
 	}
 
@@ -52,7 +58,7 @@ public class Application implements WebApplicationInitializer{
 		openEntityManagerInViewFilter.setEntityManagerFactoryBeanName(ENTITY_MANAGER_FACTORY_BEAN_NAME);
 		return openEntityManagerInViewFilter;
 	}
-		
+	
 	private EnumSet<DispatcherType> getDispatcherTypes() {
 		return EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.INCLUDE, DispatcherType.ASYNC);
 		}
