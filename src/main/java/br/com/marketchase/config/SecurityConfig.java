@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -21,18 +22,20 @@ import br.com.marketchase.models.services.AuthenticationService;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+	private static final String FILTER_URL_LOJAS    = "/lojas/**";
+	private static final String FILTER_URL_ENDERECO = "/enderecos/**";
+	private static final String FILTER_URL_CONTATO = "/contatos/**";
+	private static final String ROLE_LOJISTA        = "LOJISTA";
+	
 	@Autowired
 	private AuthenticationService authenticationService;
 	
-	private final String ROLE_LOJISTA = "";
-	private final String FILTER_URL = "";
 	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth
 			.userDetailsService(authenticationService)
 			.passwordEncoder(encoder());
-			
 	}
 	
 	@Bean
@@ -52,8 +55,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-				//.antMatchers(FILTER_URL).hasRole(ROLE_LOJISTA)//urls que o spring deve filtrar para liberar ou bloquear acesso
-				.anyRequest().permitAll()                     
+				.antMatchers(HttpMethod.DELETE, FILTER_URL_LOJAS)   .hasRole(ROLE_LOJISTA)
+				.antMatchers(HttpMethod.PUT,    FILTER_URL_LOJAS)   .hasRole(ROLE_LOJISTA)
+				.antMatchers(HttpMethod.DELETE, FILTER_URL_ENDERECO).hasRole(ROLE_LOJISTA)
+				.antMatchers(HttpMethod.POST,   FILTER_URL_ENDERECO).hasRole(ROLE_LOJISTA)
+				.antMatchers(HttpMethod.PUT,    FILTER_URL_ENDERECO).hasRole(ROLE_LOJISTA)
+				.antMatchers(HttpMethod.DELETE, FILTER_URL_CONTATO) .hasRole(ROLE_LOJISTA)
+				.antMatchers(HttpMethod.POST,   FILTER_URL_CONTATO) .hasRole(ROLE_LOJISTA)
+				.antMatchers(HttpMethod.PUT,    FILTER_URL_CONTATO) .hasRole(ROLE_LOJISTA)
+				.anyRequest().permitAll()
 				.and()
 					.httpBasic().authenticationEntryPoint(noAuthorizedEntryPoint())
 				.and()
@@ -64,5 +74,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	public BCryptPasswordEncoder encoder() {
 		return new BCryptPasswordEncoder();
 	}
+
+	/*public static void main(String [] args){
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		System.out.println(encoder.encode("admin"));
+	}*/
 	
 }
