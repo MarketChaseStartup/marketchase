@@ -103,9 +103,9 @@ public class LojaService {
 			Endereco endereco = new Endereco();
 			endereco = enderecoParser.paraDomain(e, endereco);
 			
-			Contato contato = new Contato();
 			endereco.setListaContato(new ArrayList<Contato>());
 			for (ContatoResource c : e.getListaContatos()) {
+				Contato contato = new Contato();
 				contato = contatoParser.paraDomain(c, contato);
 				
 				endereco.getListaContato().add(contato);
@@ -126,9 +126,9 @@ public class LojaService {
 			EnderecoResource enderecoResource = new EnderecoResource();
 			enderecoResource = enderecoParser.paraResource(e, enderecoResource);
 			
-			ContatoResource contatoResource = new ContatoResource();
 			enderecoResource.setListaContatos(new ArrayList<ContatoResource>());
 			for(Contato c : e.getListaContato()){
+				ContatoResource contatoResource = new ContatoResource();
 				contatoResource = contatoParser.paraResource(c, contatoResource);
 				enderecoResource.getListaContatos().add(contatoResource);
 			}

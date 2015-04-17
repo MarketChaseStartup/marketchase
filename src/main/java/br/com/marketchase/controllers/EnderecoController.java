@@ -26,9 +26,9 @@ public class EnderecoController {
 	}
 	
 	@RequestMapping(value = "/{codigo}", method = RequestMethod.PUT)
-	public ResponseEntity<String> editar(@RequestBody EnderecoResource enderecoResource){
-		enderecoService.editar(enderecoResource);
-		return new ResponseEntity<String>(HttpStatus.CREATED);
+	public ResponseEntity<JsonError> editar(@RequestBody EnderecoResource enderecoResource){
+		JsonError objeto = enderecoService.editar(enderecoResource);
+		return new ResponseEntity<JsonError>(objeto,HttpStatus.CREATED);
 	}
 	
 	@RequestMapping(value = "/{codigo}", method = RequestMethod.DELETE)

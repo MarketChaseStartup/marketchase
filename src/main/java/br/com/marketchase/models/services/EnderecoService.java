@@ -84,9 +84,28 @@ public class EnderecoService {
 	@Transactional
 	public JsonError editar(EnderecoResource enderecoResource)
 			throws EnderecoException {
-		Endereco endereco = enderecoRepository.findOneByCodigo(enderecoResource
-				.getCodigo());
+		Endereco endereco = enderecoRepository.findOneByCodigo(enderecoResource.getCodigo());
 		endereco = enderecoParser.paraDomain(enderecoResource, endereco);
+		
+		endereco.setListaContato(new ArrayList<Contato>());
+		for (ContatoResource c : enderecoResource.getListaContatos()) {
+			Contato contato = new Contato();
+			contato = contatoParser.paraDomain(c, contato);
+			endereco.getListaContato().add(contato);
+		}
+		
+		endereco = enderecoRepository.saveAndFlush(endereco);
+		
+		enderecoResource = null;
+		enderecoResource = new EnderecoResource();
+		enderecoResource.setListaContatos(new ArrayList<ContatoResource>());
+		enderecoResource = enderecoParser.paraResource(endereco, enderecoResource);
+		for(Contato c : endereco.getListaContato()){
+			ContatoResource contatoResource = new ContatoResource();
+			contatoResource = contatoParser.paraResource(c, contatoResource);
+			enderecoResource.getListaContatos().add(contatoResource);
+		}
+		
 		JsonError objeto = new JsonError();
 		objeto.setListaObjetos(new ArrayList<Object>());
 		objeto.getListaObjetos().add(endereco);
