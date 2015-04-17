@@ -25,6 +25,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private static final String FILTER_URL_LOJAS    = "/lojas/**";
 	private static final String FILTER_URL_ENDERECO = "/enderecos/**";
 	private static final String FILTER_URL_CONTATO = "/contatos/**";
+	private static final String FILTER_URL_ANUNCIO = "/anuncio/**";
 	private static final String ROLE_LOJISTA        = "LOJISTA";
 	
 	@Autowired
@@ -63,6 +64,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers(HttpMethod.DELETE, FILTER_URL_CONTATO) .hasRole(ROLE_LOJISTA)
 				.antMatchers(HttpMethod.POST,   FILTER_URL_CONTATO) .hasRole(ROLE_LOJISTA)
 				.antMatchers(HttpMethod.PUT,    FILTER_URL_CONTATO) .hasRole(ROLE_LOJISTA)
+				.antMatchers(HttpMethod.PUT,    FILTER_URL_ANUNCIO) .hasRole(ROLE_LOJISTA)
+				.antMatchers(HttpMethod.DELETE,    FILTER_URL_ANUNCIO) .hasRole(ROLE_LOJISTA)
+				.antMatchers(HttpMethod.POST,    FILTER_URL_ANUNCIO) .hasRole(ROLE_LOJISTA)
 				.anyRequest().permitAll()
 				.and()
 					.httpBasic().authenticationEntryPoint(noAuthorizedEntryPoint())
