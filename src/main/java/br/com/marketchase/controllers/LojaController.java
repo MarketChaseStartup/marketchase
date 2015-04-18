@@ -3,6 +3,7 @@ package br.com.marketchase.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -40,6 +41,12 @@ public class LojaController {
 	@RequestMapping(value="/",method= RequestMethod.GET)
 	public ResponseEntity<JsonError>selecionar(){
 		JsonError objeto = lojaService.Selecionar();
+		return new ResponseEntity<>(objeto,HttpStatus.OK);
+	}
+	
+	@RequestMapping(value="/{codigo}",method= RequestMethod.GET)
+	public ResponseEntity<JsonError>selecionar(@PathVariable Long codigo){
+		JsonError objeto = lojaService.Selecionar(codigo);
 		return new ResponseEntity<>(objeto,HttpStatus.OK);
 	}
 	

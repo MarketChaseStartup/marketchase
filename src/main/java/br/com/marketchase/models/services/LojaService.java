@@ -30,7 +30,7 @@ import br.com.marketchase.parser.LojaParser;
 public class LojaService {
 
 	private static final String ROLE_LOJISTA = "ROLE_LOJISTA";
-
+	
 	@Autowired
 	private PermissaoRepository permissaoRepository;
 	
@@ -204,4 +204,30 @@ public class LojaService {
 		objeto.getListaObjetos().addAll(listaLojasResource);
 		return objeto;
 	}
+	
+	public JsonError Selecionar(long codigo) throws LojaException{
+		Loja loja = lojaRepository.findOne(codigo);
+		
+		LojaResource lojaResource = new LojaResource();
+		lojaResource = lojaParser.paraResource(loja, lojaResource);
+		
+		lojaResource.setListaEnderecos(new ArrayList<EnderecoResource>());
+		for (Endereco e : loja.getListaEndereco()) {
+			EnderecoResource enderecoResource = new EnderecoResource();
+			enderecoResource.setListaContatos(new ArrayList<ContatoResource>());
+			enderecoResource = enderecoParser.paraResource(e, enderecoResource);
+			for(Contato c : e.getListaContato()){
+				ContatoResource contatoResource = new ContatoResource();
+				contatoResource = contatoParser.paraResource(c, contatoResource);
+				enderecoResource.getListaContatos().add(contatoResource);
+			}
+			lojaResource.getListaEnderecos().add(enderecoResource);
+		}
+		
+		JsonError objeto = new JsonError();
+		objeto.setListaObjetos(new ArrayList<Object>());
+		objeto.getListaObjetos().add(lojaResource);
+		return objeto;
+	}
+	
 }
