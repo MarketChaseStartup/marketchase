@@ -53,6 +53,11 @@ public class AnuncioService {
 		
 		anuncio = anuncioParser.paraDomain(anuncioResource, anuncio);
 		
+		Loja loja = lojaRepository.findOne(anuncioResource.getLoja().getCodigo());
+		anuncio.setLoja(loja);
+		loja.setListaAnuncios(new ArrayList<Anuncio>());
+		loja.getListaAnuncios().add(anuncio);
+		
 		return anuncioRepository.saveAndFlush(anuncio);		
 	}
 	

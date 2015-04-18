@@ -11,8 +11,11 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.marketchase.exceptions.LojaException;
 import br.com.marketchase.models.domains.Contato;
 import br.com.marketchase.models.domains.Endereco;
+import br.com.marketchase.models.domains.Login;
 import br.com.marketchase.models.domains.Loja;
+import br.com.marketchase.models.domains.Permissao;
 import br.com.marketchase.models.repositories.LojaRepository;
+import br.com.marketchase.models.repositories.PermissaoRepository;
 import br.com.marketchase.models.resources.ContatoResource;
 import br.com.marketchase.models.resources.EnderecoResource;
 import br.com.marketchase.models.resources.JsonError;
@@ -26,6 +29,11 @@ import br.com.marketchase.parser.LojaParser;
 @Service
 public class LojaService {
 
+	private static final String ROLE_LOJISTA = "ROLE_LOJISTA";
+
+	@Autowired
+	private PermissaoRepository permissaoRepository;
+	
 	@Autowired
 	private LojaRepository lojaRepository;
 
@@ -48,7 +56,13 @@ public class LojaService {
 	public JsonError salvar(LojaResource lojaResource) throws LojaException {
 		Loja loja = new Loja();
 		loja = lojaParser.paraDomain(lojaResource, loja);
-
+		
+		loja.setLogin(new Login());
+		loja.setLogin(loginParser.paraDomain(lojaResource.getLogin(), loja.getLogin()));
+		
+		loja.getLogin().setListaPermissao(new ArrayList<Permissao>());
+		loja.getLogin().getListaPermissao().add(permissaoRepository.findOneBynome(ROLE_LOJISTA));
+		
 		List<Endereco> listaEndereco = new ArrayList<Endereco>();
 		for (EnderecoResource e : lojaResource.getListaEnderecos()) {
 			Endereco endereco = new Endereco();
@@ -64,6 +78,7 @@ public class LojaService {
 			listaEndereco.add(endereco);
 		}
 		loja.setListaEndereco(listaEndereco);
+		loja.getLogin().setLoja(loja);
 		loja = lojaRepository.save(loja);
 		
 		lojaResource = null;
@@ -98,6 +113,12 @@ public class LojaService {
 		Loja loja = new Loja();
 		loja = lojaParser.paraDomain(lojaResource, loja);
 
+		loja.setLogin(new Login());
+		loja.setLogin(loginParser.paraDomain(lojaResource.getLogin(), loja.getLogin()));
+		
+		loja.getLogin().setListaPermissao(new ArrayList<Permissao>());
+		loja.getLogin().getListaPermissao().add(permissaoRepository.findOneBynome(ROLE_LOJISTA));
+		
 		List<Endereco> listaEndereco = new ArrayList<Endereco>();
 		for (EnderecoResource e : lojaResource.getListaEnderecos()) {
 			Endereco endereco = new Endereco();
@@ -113,6 +134,7 @@ public class LojaService {
 			listaEndereco.add(endereco);
 		}
 		loja.setListaEndereco(listaEndereco);
+		loja.getLogin().setLoja(loja);
 		loja = lojaRepository.saveAndFlush(loja);
 
 		lojaResource = null;

@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -28,6 +29,9 @@ public class Loja{
 	private String nome;
 	
 	private boolean ativa;
+	
+	@OneToOne(cascade = CascadeType.ALL,mappedBy="loja")
+	private Login login;
 	
 	@OneToMany(cascade=CascadeType.ALL)
 	@JoinColumn(nullable=false)
@@ -75,6 +79,14 @@ public class Loja{
 		this.ativa = ativa;
 	}
 	
+	public Login getLogin() {
+		return login;
+	}
+
+	public void setLogin(Login login) {
+		this.login = login;
+	}
+
 	public List<Endereco> getListaEndereco() {
 		return listaEndereco;
 	}

@@ -13,11 +13,14 @@ public class LoginParser implements ObjectParser<Login, LoginResource> {
 	@Autowired
 	private BCryptPasswordEncoder enconder;
 	
+	@Autowired 
+	private BCryptPasswordEncoder encoder;
+	
 	@Override
 	public Login paraDomain(LoginResource loginResource , Login login) {
 		login.setCodigo(loginResource.getCodigo());
 		login.setUsuario(loginResource.getUsuario());
-		login.setSenha(loginResource.getSenha());
+		login.setSenha(encoder.encode(loginResource.getSenha()));
 		return login;
 	}
 
