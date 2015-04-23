@@ -47,6 +47,8 @@ public class EnderecoResource {
 	
 	private ZonaEndereco zonaEndereco;
 	
+	private String tipoLogradouro;
+	
 	private List<ContatoResource> listaContatos;
 	
 	private LojaResource loja;
@@ -125,6 +127,14 @@ public class EnderecoResource {
 	}
 	public void setZonaEndereco(ZonaEndereco zonaEndereco) {
 		this.zonaEndereco = zonaEndereco;
+	}
+	
+	public String getTipoLogradouro() {
+		return tipoLogradouro;
+	}
+
+	public void setTipoLogradouro(String tipoLogradouro) {
+		this.tipoLogradouro = tipoLogradouro;
 	}
 	
 	@Override

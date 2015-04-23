@@ -21,6 +21,7 @@ public class EnderecoParser implements ObjectParser<Endereco, EnderecoResource> 
 		endereco.setBairro(enderecoResource.getBairro());
 		endereco.setReferencia(enderecoResource.getReferencia());
 		endereco.setZonaEndereco(enderecoResource.getZonaEndereco());
+		endereco.setTipoLogradouro(enderecoResource.getTipoLogradouro());
 		return endereco;
 	}
 
@@ -36,6 +37,7 @@ public class EnderecoParser implements ObjectParser<Endereco, EnderecoResource> 
 		enderecoResource.setBairro(endereco.getBairro());
 		enderecoResource.setReferencia(endereco.getReferencia());
 		enderecoResource.setZonaEndereco(endereco.getZonaEndereco());
+		enderecoResource.setTipoLogradouro(endereco.getTipoLogradouro());
 		return enderecoResource;
 	}
 

@@ -59,6 +59,10 @@ public class Endereco {
 	@Enumerated(EnumType.STRING)
 	private ZonaEndereco zonaEndereco;
 	
+	@NotNull
+	@NotEmpty
+	private String tipoLogradouro;
+	
 	@OneToMany(cascade=CascadeType.ALL)
 	@JoinColumn(nullable=true,name="idEndereco")
 	private List<Contato> listaContatos;
@@ -69,7 +73,7 @@ public class Endereco {
 	
 	public Endereco(long codigo, String numero, String complemento, String rua,
 			String cep, String estado, String cidade, String bairro,
-			String referencia, ZonaEndereco zonaEndereco) {
+			String referencia, ZonaEndereco zonaEndereco, String tipoLogradouro) {
 		super();
 		this.codigo = codigo;
 		this.numero = numero;
@@ -81,6 +85,7 @@ public class Endereco {
 		this.bairro = bairro;
 		this.referencia = referencia;
 		this.zonaEndereco = zonaEndereco;
+		this.tipoLogradouro = tipoLogradouro;
 	}
 
 	public long getCodigo() {
@@ -171,6 +176,14 @@ public class Endereco {
 		this.listaContatos = listaContatos;
 	}
 
+	public String getTipoLogradouro() {
+		return tipoLogradouro;
+	}
+
+	public void setTipoLogradouro(String tipoLogradouro) {
+		this.tipoLogradouro = tipoLogradouro;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
