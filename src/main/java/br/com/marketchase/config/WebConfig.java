@@ -10,14 +10,17 @@ import org.springframework.web.servlet.config.annotation.ContentNegotiationConfi
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+
+
 @Configuration
 @EnableAsync
 @EnableWebMvc
 @ComponentScan(basePackages = "br.com.marketchase.*")
-public class WebConfig extends WebMvcConfigurerAdapter {
+public class WebConfig extends WebMvcConfigurerAdapter{
 	
 	private final String MEDIA_TYPE_XML  = "xml";
 	private final String MEDIA_TYPE_JSON = "json";
+	
 	
 	@Override
 	public void configureContentNegotiation(
@@ -30,5 +33,5 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 				.favorParameter(false).favorPathExtension(true);
 		super.configureContentNegotiation(configurer);
 	}
-	
+		
 }
